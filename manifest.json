@@ -1,13 +1,18 @@
 {
   "manifest_version": 3,
   "name": "Markdown Snap Preview",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "监听复制 Markdown 内容，提供精美预览和导出",
   "permissions": [
-    "clipboardRead",
     "activeTab",
     "storage",
     "contextMenus"
+  ],
+  "optional_permissions": [
+    "clipboardRead"
+  ],
+  "host_permissions": [
+    "<all_urls>"
   ],
   "background": {
     "service_worker": "background.js"
