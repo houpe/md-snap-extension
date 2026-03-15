@@ -4,8 +4,30 @@
 (function() {
   'use strict';
 
+  // 排除的网站列表（这些网站不触发弹窗）
+  const EXCLUDED_HOSTS = [
+    'doubao.com',
+    'kimi.moonshot.cn',
+    'chat.openai.com',
+    'claude.ai',
+    'gemini.google.com',
+    'chat.deepseek.com'
+  ];
+
+  // 检查当前网站是否在排除列表中
+  function isExcludedHost(): boolean {
+    const hostname = window.location.hostname;
+    return EXCLUDED_HOSTS.some(host => hostname.includes(host));
+  }
+
+  // 如果在排除列表中，只记录日志，不监听
+  if (isExcludedHost()) {
+    console.log('Markdown Snap: 该网站已排除，不启用监听');
+    return;
+  }
+
   // 检测是否为 Markdown 内容
-  function isMarkdown(text) {
+  function isMarkdown(text: string): boolean {
     if (!text || text.length < 10) return false;
 
     const mdPatterns = [
@@ -33,7 +55,7 @@
   }
 
   // 创建弹窗
-  function createPopup(mdContent) {
+  function createPopup(mdContent: string): void {
     const existingPopup = document.getElementById('md-snap-popup');
     if (existingPopup) existingPopup.remove();
 
@@ -56,8 +78,7 @@
     document.body.appendChild(popup);
 
     // 绑定事件
-    popup.querySelector('.md-snap-btn-preview').addEventListener('click', () => {
-      // 发送消息给 background 处理
+    popup.querySelector('.md-snap-btn-preview')?.addEventListener('click', () => {
       try {
         chrome.runtime.sendMessage({ 
           action: 'openPreview', 
@@ -65,18 +86,15 @@
         }, (response) => {
           if (chrome.runtime.lastError) {
             console.error('Markdown Snap:', chrome.runtime.lastError);
-            // 降级方案：尝试直接打开
-            alert('请刷新页面后重试');
           }
         });
       } catch (e) {
         console.error('Markdown Snap error:', e);
-        alert('插件需要刷新页面才能使用');
       }
       popup.remove();
     });
 
-    popup.querySelector('.md-snap-btn-cancel').addEventListener('click', () => {
+    popup.querySelector('.md-snap-btn-cancel')?.addEventListener('click', () => {
       popup.remove();
     });
 
@@ -102,7 +120,7 @@
           createPopup(text);
         }
       }).catch(err => {
-        console.log('Markdown Snap: 无法读取剪贴板', err.message);
+        // 静默处理，不输出错误
       });
     }, 100);
   });
