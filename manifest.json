@@ -1,0 +1,41 @@
+{
+  "manifest_version": 3,
+  "name": "Markdown Snap Preview",
+  "version": "1.0.0",
+  "description": "监听复制 Markdown 内容，提供精美预览和导出",
+  "permissions": [
+    "clipboardRead",
+    "activeTab",
+    "storage",
+    "contextMenus"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "src/popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["src/content/content.js"],
+      "css": ["src/content/content.css"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["src/preview/*", "src/preview/assets/*"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
