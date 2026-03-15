@@ -2,6 +2,10 @@
 
 Chrome 浏览器扩展 - 监听复制 Markdown 内容，提供精美预览和导出
 
+## 预览效果
+
+![Markdown Snap Preview](screenshot.jpg)
+
 ## 功能特性
 
 - ✅ **复制监听**：复制 Markdown 内容时自动弹窗提示预览
@@ -56,14 +60,8 @@ md-snap-extension/
 ├── icons/             # 插件图标
 └── src/
     ├── content/       # 内容脚本（监听复制）
-    │   ├── content.js
-    │   └── content.css
     ├── popup/         # 弹窗界面
-    │   ├── popup.html
-    │   └── popup.js
     └── preview/       # 预览页面
-        ├── index.html
-        └── assets/
 ```
 
 ## 技术栈
